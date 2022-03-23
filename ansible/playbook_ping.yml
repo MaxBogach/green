@@ -1,0 +1,7 @@
+---
+- name: Ping my servers
+  hosts: MY_SERVERS
+
+  tasks:
+    - name: Ping server
+      ping:
