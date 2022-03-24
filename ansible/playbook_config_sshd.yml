@@ -1,0 +1,61 @@
+---
+- name: Config sshd
+  hosts: MY_SERVERS
+  become: yes
+
+  # We always check autostart sshd
+  # If we can be sudo - we can disable root, and must do it
+  # If we can use this script, then we already use key authorization, and can disable passwords
+
+  tasks:
+    - name: Check autostart sshd
+      service: name=sshd enabled=yes
+
+    - name: deactivate PermitRootLogin
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: "PermitRootLogin[ ]+?(yes|no)"
+        line: "PermitRootLogin no"
+        state: present
+      notify:
+        - Restart sshd
+
+    - name: desable PasswordAuthentication
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: "PasswordAuthentication[ ]+?(yes|no)"
+        line: "PasswordAuthentication no"
+        state: present
+      notify:
+        - Restart sshd
+
+    - name: desable PermitEmptyPasswords
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: "PermitEmptyPasswords[ ]+?(yes|no)"
+        line: "PermitEmptyPasswords no"
+        state: present
+      notify:
+        - Restart sshd
+
+    - name: desable ChallengeResponseAuthentication
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: "ChallengeResponseAuthentication[ ]+?(yes|no)"
+        line: "ChallengeResponseAuthentication no"
+        state: present
+      notify:
+        - Restart sshd
+
+    - name: desable UsePAM
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: "UsePAM[ ]+?(yes|no)"
+        line: "UsePAM no"
+        state: present
+      notify:
+        - Restart sshd
+
+  handlers:
+      - name: Restart sshd
+        service: name=sshd state=restarted
