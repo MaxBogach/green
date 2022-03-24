@@ -9,7 +9,9 @@
 
   tasks:
     - name: Check autostart sshd
-      service: name=sshd enabled=yes
+      service:
+        name: sshd
+        enabled: yes
 
     - name: deactivate PermitRootLogin
       lineinfile:
@@ -58,4 +60,6 @@
 
   handlers:
       - name: Restart sshd
-        service: name=sshd state=restarted
+        service:
+          name: sshd
+          state: restarted
