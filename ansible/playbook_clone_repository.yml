@@ -1,0 +1,13 @@
+---
+- name: Clone repository
+  hosts: MY_SERVERS
+  become: yes
+
+
+  tasks:
+    - name: Git clone of a single branch
+      ansible.builtin.git:
+        repo: https://github.com/MaxBogach/green.git
+        dest: /opt/green
+        single_branch: yes
+        version: master
