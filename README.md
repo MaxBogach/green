@@ -10,7 +10,7 @@ Ansible playbooks:
 * ping server
 * check and config `sshd`
 * install `docker-compose`
-* TODO: clone this repository
+* clone this repository
 * TODO: start/stop containers
 
 Docker-compose
