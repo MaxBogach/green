@@ -1,8 +1,7 @@
 ---
 - name: Clone repository
-  hosts: MY_SERVERS
+  hosts: GREEN_SERVER
   become: yes
-
 
   tasks:
     - name: Git clone of a single branch

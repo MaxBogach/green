@@ -1,6 +1,6 @@
 ---
-- name: Ping my servers
-  hosts: MY_SERVERS
+- name: Ping green server
+  hosts: GREEN_SERVER
 
   tasks:
     - name: Ping server

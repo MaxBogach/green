@@ -1,0 +1,7 @@
+[GREEN_SERVER]
+green  ansible_host=192.168.0.1
+
+[GREEN_SERVER:vars]
+ansible_user=new_user
+ansible_ssh_private_key_file=/home/new_user/.ssh/new_user_rsa.pub
+ansible_become_password="$up3r$tr0ngP@$$VV0rd"

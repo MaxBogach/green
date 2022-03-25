@@ -1,6 +1,6 @@
 ---
 - name: Install docker-compose
-  hosts: all
+  hosts: GREEN_SERVER
   become: yes
 
   # https://docs.docker.com/engine/install/debian/#install-using-the-repository
@@ -56,7 +56,6 @@
     - debug:
         var: result3
 
-    #   curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     - name: Install docker-compose from official github repo
       get_url:
         url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
@@ -68,12 +67,3 @@
 
     - debug:
         var: result4
-
-
-
-#    - name: Install docker-ce
-#      apt:
-#        name: docker-ce
-#        state: present
-#        update_cache: yes
-

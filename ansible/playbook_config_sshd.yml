@@ -1,6 +1,6 @@
 ---
 - name: Config sshd
-  hosts: MY_SERVERS
+  hosts: GREEN_SERVER
   become: yes
 
   # We always check autostart sshd

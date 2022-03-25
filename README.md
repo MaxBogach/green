@@ -25,8 +25,10 @@ How to use
 File `ansible/hosts` store IP address of server
 ```shell
 cd ansible                            # All ansible's files store here
-ansible-playbook playbook_ping.yml    # Jast ping server
-ansible-playbook playbook_config_sshd.yml --ask-become-pass               # Disable password authentication
-ansible-playbook playbook_install_docker_compose.yml --ask-become-pass    # Install Docker-Compose
+cp hosts.sample hosts                 # Make copy of server config
+nano hosts                            # Set configuration variables. This file ignored by git
+ansible-playbook playbook_ping.yml                      # Jast ping server
+ansible-playbook playbook_config_sshd.yml               # Disable password authentication
+ansible-playbook playbook_install_docker_compose.yml    # Install Docker-Compose
+ansible-playbook playbook_clone_repository.yml          # Clone repository to server
 ```
-
