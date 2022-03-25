@@ -24,6 +24,8 @@ How to use
 ==========
 File `ansible/hosts` store IP address of server
 ```shell
+ansible-galaxy collection install community.docker
+
 cd ansible                            # All ansible's files store here
 cp hosts.sample hosts                 # Make copy of server config
 nano hosts                            # Set configuration variables. This file ignored by git
