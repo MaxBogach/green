@@ -22,15 +22,19 @@ Docker-compose
 
 How to use
 ==========
-File `ansible/hosts` store IP address of server
+Config files (make copy from *.sample file): 
+* `ansible/hosts` store IP address of server
+* `.env` store username and password for samba share `Storage`
 ```shell
 ansible-galaxy collection install community.docker
 
 cd ansible                            # All ansible's files store here
 cp hosts.sample hosts                 # Make copy of server config
 nano hosts                            # Set configuration variables. This file ignored by git
-ansible-playbook playbook_ping.yml                      # Jast ping server
-ansible-playbook playbook_config_sshd.yml               # Disable password authentication
-ansible-playbook playbook_install_docker_compose.yml    # Install Docker-Compose
-ansible-playbook playbook_clone_repository.yml          # Clone repository to server
+ansible-playbook playbook_00_ping.yml                       # Jast ping server
+ansible-playbook playbook_01_config_sshd.yml                # Disable password authentication
+ansible-playbook playbook_02_install_docker_compose.yml     # Install Docker-Compose
+ansible-playbook playbook_03_clone_repository.yml           # Clone repository to server
+ansible-playbook playbook_04_start_docker-compose.yml       
+ansible-playbook playbook_05_stop_docker-compose.yml
 ```

@@ -4,8 +4,8 @@ services:
   nginx:
     image: nginx:1.21.5-alpine
     volumes:
-      - ./docker-nginx/etc_nginx:/etc/nginx:ro
-      - ./docker-nginx/usr_share_nginx:/usr/share/nginx
+      - ./docker/etc_nginx:/etc/nginx:ro
+      - ./docker/usr_share_nginx:/usr/share/nginx
     ports:
       - "80:80"
 
@@ -23,7 +23,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./docker-samba:/mount
-      - /mnt2:/mnt2:z
-    command: '-s "Mount;/mount" -s "Bobs Volume;/etc;yes;no;no;bob" -u "bob;bobspasswd" -p'
+      - ${SHARED_PATH}:/mnt
+    command: '-s "Storage;/mnt;yes;no;no;${USER_NAME}" -u "${USER_NAME};${USER_PASS}" -p'
+    # -s "<name;/path>[;browse;readonly;guest;users;admins;writelist;comment]"
 

@@ -1,0 +1,14 @@
+---
+- name: Start docker-compose
+  hosts: GREEN_SERVER
+  become: yes
+
+  tasks:
+    - name: Run 'docker-compose stop'
+      community.docker.docker_compose:
+        project_src: /opt/green
+        build: no
+      register: output
+
+    - ansible.builtin.debug:
+        var: output
