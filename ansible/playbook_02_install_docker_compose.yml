@@ -18,6 +18,10 @@
   # docker-compose --version
 
   tasks:
+    - name: Update cache
+      apt:
+        update_cache: yes
+
     - name: Install docker packages
       apt:
         name:
@@ -26,7 +30,6 @@
           - gnupg
           - lsb-release
         state: present
-        update_cache: yes
 
     - name: Add Docker’s official GPG key
       shell: "curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --yes --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
