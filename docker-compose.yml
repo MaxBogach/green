@@ -3,5 +3,27 @@ version: '3.7'
 services:
   nginx:
     image: nginx:1.21.5-alpine
+    volumes:
+      - ./docker-nginx/etc_nginx:/etc/nginx:ro
+      - ./docker-nginx/usr_share_nginx:/usr/share/nginx
     ports:
       - "80:80"
+
+  samba:
+    image: dperson/samba:amd64
+    ports:
+      - "137:137/udp"
+      - "138:138/udp"
+      - "139:139/tcp"
+      - "445:445/tcp"
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./docker-samba:/mount
+      - /mnt2:/mnt2:z
+    command: '-s "Mount;/mount" -s "Bobs Volume;/etc;yes;no;no;bob" -u "bob;bobspasswd" -p'
+
