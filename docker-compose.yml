@@ -2,12 +2,66 @@ version: '3.7'
 
 services:
   nginx:
-    image: nginx:1.21.5-alpine
+    image: nginx:${NGINX_VERSION}
     volumes:
-      - ./docker/etc_nginx:/etc/nginx:ro
-      - ./docker/usr_share_nginx:/usr/share/nginx
+      - ./docker/nginx_etc:/etc/nginx
+      - ./docker/nginx_share:/usr/share/nginx
     ports:
       - "80:80"
+
+
+  gitlab:
+    image: gitlab/gitlab-ce:${GITLAB_VERSION}
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ./docker/gitlab_config:/etc/gitlab
+      - ./docker/gitlab_data:/var/opt/gitlab
+      - ./docker/gitlab_logs:/var/log/gitlab
+    ports:
+      - "443:443"
+      - "8080:80"
+      - "2222:22"
+
+
+  # sudo chown -R 1000:1000 ./docker/teamcity_server_*
+  teamcity_server:
+    image: jetbrains/teamcity-server:${TEAMCITY_VERSION}
+    environment:
+      - TZ=${TZ}
+    ports:
+      - "8111:8111"
+    volumes:
+      - ./docker/teamcity_server_data:/data/teamcity_server/datadir
+      - ./docker/teamcity_server_logs:/opt/teamcity/logs
+
+
+  teamcity_agent_1:
+    container_name: teamcity_agent_1
+    image: jetbrains/teamcity-agent:${TEAMCITY_VERSION}-linux-sudo
+    privileged: true
+    volumes:
+      - ./docker/teamcity_agent_1_conf:/data/teamcity_agent/conf
+      - ./docker/teamcity_agent_1_daemon.json:/etc/docker/daemon.json
+    environment:
+      - DOCKER_IN_DOCKER=start
+      - TZ=${TZ}
+
+
+  # Set correct owner for nexus_data before first start:
+  # chown -R 200 ./docker/nexus_data
+  nexus:
+    container_name: nexus
+    hostname: 'nexus.lan'
+    image: sonatype/nexus3:${NEXUS_VERSION}
+    environment:
+      - TZ=${TZ}
+    ports:
+      - "8081:8081"
+      - "8123:8123"
+    volumes:
+      - ./docker/nexus_data:/nexus-data
+
 
   samba:
     image: dperson/samba:amd64
@@ -23,7 +77,27 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ${SHARED_PATH}:/mnt
-    command: '-s "Storage;/mnt;yes;no;no;${USER_NAME}" -u "${USER_NAME};${USER_PASS}" -p'
-    # -s "<name;/path>[;browse;readonly;guest;users;admins;writelist;comment]"
-
+      - ${SAMBA_SHARED_PATH}:/mnt
+        #
+        # https://github.com/dperson/samba#configuration
+        #
+        # -s "<name;/path>[;browsable;readonly;guest;users;admins;writelist;comment]"
+        #      <name> is how it's called for clients
+        #      <path> path to share
+        #      [browsable] default:'yes' or 'no'
+        #      [readonly] default:'yes' or 'no'
+        #      [guest] allowed default:'yes' or 'no'
+        #      [users] allowed default:'all' or list of allowed users, usernames are separated by ','
+        #      [admins] allowed default:'none' or list of admin users
+        #      [writelist] list of users that can write to a RO share
+        #      [comment] description of share
+        #      -u "<username;password>[;ID;group;GID]"       Add a user
+        #      <username> for user
+        #      <password> for user
+        #      [ID] for user
+        #      [group] for user
+        #      [GID] for group
+      # -p          Set ownership and permissions on the shares
+    command: '-s "Storage;/mnt;yes;no;no;${SAMBA_USER_NAME}" -u "${SAMBA_USER_NAME};${SAMBA_USER_PASS}" '
+    environment:
+      - TZ=${TZ}
