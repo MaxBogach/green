@@ -14,7 +14,7 @@ Ansible playbooks:
 * TODO: start/stop containers
 
 Docker-compose
-* TODO: samba
+* samba
 * TODO: github
 * TODO: nexus
 * TODO: teamcity

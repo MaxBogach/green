@@ -7,6 +7,7 @@
     - name: Run 'docker-compose stop'
       community.docker.docker_compose:
         project_src: /opt/green
+        stopped: yes
         build: no
       register: output
 

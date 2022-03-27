@@ -7,7 +7,7 @@
     - name: Run 'docker-compose up'
       community.docker.docker_compose:
         project_src: /opt/green
-        build: no
+        state: present
       register: output
 
     - ansible.builtin.debug:

@@ -10,3 +10,4 @@
         dest: /opt/green
         single_branch: yes
         version: master
+        force: yes
