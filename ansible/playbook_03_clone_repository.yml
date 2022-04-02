@@ -11,3 +11,8 @@
         single_branch: yes
         version: master
         force: yes
+
+    - name: Copy file '.env'
+      ansible.builtin.copy:
+        src: ../.env
+        dest: /opt/green/.env

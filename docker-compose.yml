@@ -107,8 +107,8 @@ services:
     image: linuxserver/transmission:version-3.00-r5
     container_name: transmission
     environment:
-#      - PUID=1000
-#      - PGID=1000
+      - PUID=100
+      - PGID=101
       - TZ=${TZ}
 #      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
 #      - USER=username #optional
@@ -118,7 +118,8 @@ services:
 #      - HOST_WHITELIST=dnsnane list #optional
     volumes:
       - ./docker/transmission_config:/config
-      - ${SAMBA_SHARED_PATH}/torrents:/downloads
+      - ${SAMBA_SHARED_PATH}/torrents:/downloads/complete
+      - ${SAMBA_SHARED_PATH}/torrents/incomplete:/downloads/incomplete
       - ${SAMBA_SHARED_PATH}/torrents/watch:/watch
     ports:
       - 9091:9091
