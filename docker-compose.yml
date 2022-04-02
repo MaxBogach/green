@@ -101,3 +101,27 @@ services:
     command: '-s "Storage;/mnt;yes;no;no;${SAMBA_USER_NAME}" -u "${SAMBA_USER_NAME};${SAMBA_USER_PASS}" '
     environment:
       - TZ=${TZ}
+
+
+  transmission:
+    image: linuxserver/transmission:version-3.00-r5
+    container_name: transmission
+    environment:
+#      - PUID=1000
+#      - PGID=1000
+      - TZ=${TZ}
+#      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+#      - USER=username #optional
+#      - PASS=password #optional
+#      - WHITELIST=iplist #optional
+#      - PEERPORT=peerport #optional
+#      - HOST_WHITELIST=dnsnane list #optional
+    volumes:
+      - ./docker/transmission_config:/config
+      - ${SAMBA_SHARED_PATH}/torrents:/downloads
+      - ${SAMBA_SHARED_PATH}/torrents/watch:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
