@@ -9,7 +9,8 @@ services:
       - ./docker/nginx_share:/usr/share/nginx
     ports:
       - "80:80"
-
+#      - "443:443"
+    restart: unless-stopped
 
   gitlab:
     image: gitlab/gitlab-ce:${GITLAB_VERSION}
@@ -20,7 +21,7 @@ services:
       - ./docker/gitlab_data:/var/opt/gitlab
       - ./docker/gitlab_logs:/var/log/gitlab
     ports:
-      - "443:443"
+      - "4433:443"
       - "8080:80"
       - "2222:22"
 
