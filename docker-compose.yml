@@ -11,6 +11,8 @@ services:
       - "80:80"
 #      - "443:443"
     restart: unless-stopped
+    depends_on:
+      - transmission
 
   gitlab:
     image: gitlab/gitlab-ce:${GITLAB_VERSION}
