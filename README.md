@@ -14,10 +14,12 @@ Ansible playbooks:
 * TODO: start/stop containers
 
 Docker-compose
-* samba
 * TODO: github
 * TODO: nexus
 * TODO: teamcity
+
+
+* TODO: config `dnsmasq` for lan domains 
 
 
 How to use

@@ -1,0 +1,35 @@
+---
+- name: Copy repository
+  hosts: GREEN_SERVER
+  become: yes
+
+  tasks:
+    - name: Copy docker-compose.yml
+      ansible.builtin.copy:
+        src: ../docker-compose.yml
+        dest: /opt/green/docker-compose.yml
+
+    - name: Copy docker/nginx_etc
+      ansible.builtin.copy:
+        src: ../docker/nginx_etc
+        dest: /opt/green/docker/nginx_etc
+
+    - name: Copy docker/nginx_share
+      ansible.builtin.copy:
+        src: ../docker/nginx_share
+        dest: /opt/green/docker/nginx_share
+
+    - name: Copy file '.env'
+      ansible.builtin.copy:
+        src: ../.env
+        dest: /opt/green/.env
+
+
+    - name: Run 'docker-compose up'
+      community.docker.docker_compose:
+        project_src: /opt/green
+        state: present
+      register: output
+
+    - ansible.builtin.debug:
+        var: output
